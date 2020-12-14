@@ -1,4 +1,4 @@
-#Simple WebSocket Chat Application
+# Simple WebSocket Chat Application
 
 ## Project Specifications
 
