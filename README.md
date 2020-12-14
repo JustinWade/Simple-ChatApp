@@ -1,6 +1,4 @@
-# Project 2: Simple WebSocket Chat Application
-
-## CSCI 4300 Data Communication Networks
+#Simple WebSocket Chat Application
 
 ## Project Specifications
 
