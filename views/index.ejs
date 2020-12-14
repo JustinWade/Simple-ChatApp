@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Justin Wade: Project 2</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font: 13px Helvetica, Arial; }
+        form { background: #fff; padding: 3px; position: fixed; bottom: 0; width: 100%; border-color: #000; border-top-style: solid; border-top-width: 1px;}
+        form input { border-style: solid; border-width: 1px; padding: 10px; width: 80%; margin-right: .5%; }
+        #send-button { width: 9%; background: rgb(115, 240, 115); border: none; padding: 10px; }
+        #leave-button { width: 9%; background: rgb(192, 11, 71); border: none; padding: 10px; }
+        #messages { list-style-type: none; margin: 0; padding: 0; }
+        #messages li { padding: 5px 10px; }
+        #messages li:nth-child(odd) { background: #eee; }
+    </style>
+    <script src="../../socket.io/socket.io.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+  </head>
+  <body>
+    <ul id="messages"></ul>
+    <form action="/" method="POST" id="chatForm">
+      <input id="txt" autocomplete="off" autofocus="on" oninput="isTyping()" placeholder="type your message here..." /><button id="send-button">Send</button><button id="leave-button" onclick="window.close()">Leave</button>
+    </form>
+    
+    <script>
+            var socket = io.connect('http://localhost:8080');
+            // submit text message without reload/refresh the page
+            $('form').submit(function(e){
+                e.preventDefault(); // prevents page reloading
+                socket.emit('chat_message', $('#txt').val());
+                $('#txt').val('');
+                return false;
+            });
+            // append the chat text message
+            socket.on('chat_message', function(msg){
+                $('#messages').append($('<li>').html(msg));
+            });
+            // appends text if someone is online
+            socket.on('is_online', function(username) {
+                $('#messages').append($('<li>').html(username));
+            });
+            // ask user to input username
+            var username = prompt('Enter  username');
+            socket.emit('username', username);
+    </script>
+  </body>
+</html>
